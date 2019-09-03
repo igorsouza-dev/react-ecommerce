@@ -1,68 +1,139 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Configuring VSCODE for React
 
-## Available Scripts
+## Editor config
 
-In the project directory, you can run:
+```
+$ touch .editorconfig
+```
 
-### `npm start`
+Add inside the file
+```
+root = true
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+[*]
+end_of_line = lf
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+```
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+## Eslint
 
-### `npm test`
+Install dependency
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+$ yarn add -D eslint
+```
 
-### `npm run build`
+Run eslint wizard
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```
+$ yarn eslint --init
+```
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Answer the questions on the terminal like this:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- To check syntax, find problems, and enforce code style
+- JavaScript modules (import/export)
+- React
+- N
+- Browser
+- Use a popular style guide
+- Airbnb (https://github.com/airbnb/javascript)
+- JavaScript
+- Y
 
-### `npm run eject`
+If you use Yarn, delete the `package-lock.json` and then run `yarn` again
+After the installation, a `.eslintrc.js` will be generated.
+Install babel plugin for eslint. This plugin will make eslint understands that you are using ES6
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+$ yarn add -D babel-eslint
+```
+Edit the .eslintrc.js file and add right before `parserOptions`:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```
+parser: 'babel-eslint',
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Prettier
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Install the dependencies
 
-## Learn More
+```
+$ yarn add -D prettier eslint-config-prettier eslint-plugin-prettier
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Edit the `.eslintrc.js` file and inside the extends array the following strings:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```
+'prettier',
+'prettier/react'
+```
+On plugins, add:
+```
+'prettier'
+```
+On the rules property:
 
-### Code Splitting
+```
+'prettier/prettier': 'error',
+'react/jsx-filename-extension': [
+    'warn',
+    { extensions: ['.jsx', '.js'] }
+],
+'import/prefer-default-export': 'off'
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+The whole file should look like:
 
-### Analyzing the Bundle Size
+```
+module.exports = {
+    env: {
+        browser: true,
+        es6: true,
+    },
+    extends: [
+        'airbnb',
+        'prettier',
+        'prettier/react'
+    ],
+    globals: {
+        Atomics: 'readonly',
+        SharedArrayBuffer: 'readonly',
+    },
+    parser: 'babel-eslint',
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        ecmaVersion: 2018,
+        sourceType: 'module',
+    },
+    plugins: [
+        'react',
+        'prettier'
+    ],
+    rules: {
+        'prettier/prettier': 'error',
+        'react/jsx-filename-extension': [
+            'warn',
+            { extensions: ['.jsx', '.js'] }
+        ],
+        'import/prefer-default-export': 'off'
+    },
+};
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+```
 
-### Making a Progressive Web App
+Now, add the `.prettierrc` file and add inside:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```
+{
+    "singleQuote": true,
+    "trailingComma": "es5"
+}
 
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+```
