@@ -32,6 +32,13 @@ function Cart({ cart, total, removeFromCart, updateAmountRequest }) {
           </tr>
         </thead>
         <tbody>
+          {cart.length === 0 && (
+            <tr>
+              <td colSpan="5" align="center">
+                Your cart is empty
+              </td>
+            </tr>
+          )}
           {cart.map(product => (
             <tr>
               <td>
